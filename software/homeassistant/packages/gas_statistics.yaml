@@ -50,12 +50,6 @@ input_number:
 
 template:
   - sensor:
-    - name: "Gas Contingent"
-      unique_id: gas_contingent_percent_template
-      unit_of_measurement: "%"
-      state: "{{ '%0.1f' | format( ((states('sensor.gas_meter_reading_m3') | float) - 3379.02 ) * 100 / 949.71 )}}"
-      icon: mdi:cash-multiple
-      state_class: total_increasing
     - name: 'Gas Consumption Yesterday'
       unit_of_measurement: 'kWh'
       unique_id: gas_consumption_kwh_yesterday_template
