@@ -1,0 +1,171 @@
+input_number:
+  gas_consumption_yesterday:
+    name: "Gas Consumption Yesterday"
+    mode: box
+    min: 0
+    max: 9999999999
+    step: 0.01
+    unit_of_measurement: "kWh"
+    icon: mdi:meter-gas
+  gas_cost_yesterday:
+    name: "Gas Cost Yesterday"
+    mode: box
+    min: 0
+    max: 9999999999
+    step: 0.01
+    unit_of_measurement: "€"
+    icon: mdi:meter-gas
+  gas_consumption_last_week:
+    name: "Gas Consumption Last Week"
+    mode: box
+    min: 0
+    max: 9999999999
+    step: 0.01
+    unit_of_measurement: "kWh"
+    icon: mdi:meter-gas
+  gas_cost_last_week:
+    name: "Gas Cost Last Week"
+    mode: box
+    min: 0
+    max: 9999999999
+    step: 0.01
+    unit_of_measurement: "€"
+    icon: mdi:meter-gas
+  gas_consumption_last_month:
+    name: "Gas Consumption Last Month"
+    mode: box
+    min: 0
+    max: 9999999999
+    step: 0.01
+    unit_of_measurement: "kWh"
+    icon: mdi:meter-gas
+  gas_cost_last_month:
+    name: "Gas Cost Last Month"
+    mode: box
+    min: 0
+    max: 9999999999
+    step: 0.01
+    unit_of_measurement: "€"
+    icon: mdi:meter-gas
+
+template:
+  - sensor:
+    - name: "Gas Contingent"
+      unique_id: gas_contingent_percent_template
+      unit_of_measurement: "%"
+      state: "{{ '%0.1f' | format( ((states('sensor.gas_meter_reading_m3') | float) - 3379.02 ) * 100 / 949.71 )}}"
+      icon: mdi:cash-multiple
+      state_class: total_increasing
+    - name: 'Gas Consumption Yesterday'
+      unit_of_measurement: 'kWh'
+      unique_id: gas_consumption_kwh_yesterday_template
+      icon: mdi:meter-gas
+      state: "{{ '%0.2f' | format(states('input_number.gas_consumption_yesterday') | float) }}"
+    - name: "Gas Cost Yesterday"
+      unit_of_measurement: "€"
+      unique_id: gas_consumption_eur_yesterday_template
+      icon: mdi:cash-multiple
+      state: "{{ '%0.2f' | format(states('input_number.gas_cost_yesterday') | float) }}"
+    - name: 'Gas Consumption Last Week'
+      unit_of_measurement: 'kWh'
+      unique_id: gas_consumption_kwh_last_week_template
+      icon: mdi:meter-gas
+      state: "{{ '%0.2f' | format(states('input_number.gas_consumption_last_week') | float) }}"
+    - name: 'Gas Cost Last Week'
+      unit_of_measurement: '€'
+      unique_id: gas_cost_eur_last_week_template
+      icon: mdi:cash-multiple
+      state: "{{ '%0.2f' | format(states('input_number.gas_cost_last_week') | float) }}"
+    - name: 'Gas Consumption Last Month'
+      unit_of_measurement: 'kWh'
+      unique_id: gas_consumption_kwh_last_month_template
+      icon: mdi:meter-gas
+      state: "{{ '%0.2f' | format(states('input_number.gas_consumption_last_month') | float) }}"
+    - name: 'Gas Cost Last Month'
+      unit_of_measurement: '€'
+      unique_id: gas_cost_eur_last_month_template
+      icon: mdi:cash-multiple
+      state: "{{ '%0.2f' | format(states('input_number.gas_cost_last_month') | float) }}"
+
+utility_meter:
+  gas_consumption_kwh_daily:
+    name: "Gas Consumption Today"
+    unique_id: gas_consumption_kwh_daily
+    source: sensor.gas_meter_reading_kwh
+    cycle: daily
+  gas_consumption_kwh_weekly:
+    name: "Gas Consumption This Week"
+    unique_id: gas_consumption_kwh_weekly
+    source: sensor.gas_meter_reading_kwh
+    cycle: weekly
+  gas_consumption_kwh_monthly:
+    name: "Gas Consumption This Month"
+    unique_id: gas_consumption_kwh_monthly
+    source: sensor.gas_meter_reading_kwh
+    cycle: monthly
+  gas_consumption_kwh_yearly:
+    name: "Gas Consumption This Year"
+    unique_id: gas_consumption_kwh_yearly
+    source: sensor.gas_meter_reading_kwh
+    cycle: yearly
+  gas_cost_euro_daily:
+    name: "Gas Cost Today"
+    unique_id: gas_cost_euro_daily
+    source: sensor.gas_cost_reading
+    cycle: daily
+  gas_cost_euro_weekly:
+    name: "Gas Cost This Week"
+    unique_id: gas_cost_euro_weekly
+    source: sensor.gas_cost_reading
+    cycle: weekly
+  gas_cost_euro_monthly:
+    name: "Gas Cost This Month"
+    unique_id: gas_cost_euro_monthly
+    source: sensor.gas_cost_reading
+    cycle: monthly
+  gas_cost_euro_yearly:
+    name: "Gas Cost This Year"
+    unique_id: gas_cost_euro_yearly
+    source: sensor.gas_cost_reading
+    cycle: yearly
+
+automation:
+  - alias: "Gas Yesterday"
+    trigger:
+      platform: template
+      value_template: "{{ now().hour == 23 and now().minute == 59}}"
+    action:
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.gas_consumption_yesterday
+          value: "{{ states('sensor.gas_consumption_today') | float }}"
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.gas_cost_yesterday
+          value: "{{ states('sensor.gas_cost_today') | float }}"
+  - alias: "Gas Last Week"
+    trigger:
+      platform: template
+      value_template: "{{ now().hour == 23 and now().minute == 59 and (now() + timedelta(days=1)).strftime('%-w') == '1' }}"
+    action:
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.gas_consumption_last_week
+          value: "{{ states('sensor.gas_consumption_this_week') | float }}"
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.gas_cost_last_week
+          value: "{{ states('sensor.gas_cost_this_week') | float }}"
+  - alias: "Gas Last Month"
+    trigger:
+      platform: template
+      value_template: "{{ now().hour == 23 and now().minute == 59 and (now() + timedelta(days=1)).strftime('%-d') == '1' }}"
+    action:
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.gas_consumption_last_month
+          value: "{{ states('sensor.gas_consumption_this_month') | float }}"
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.gas_cost_last_month
+          value: "{{ states('sensor.gas_cost_this_month') | float }}"

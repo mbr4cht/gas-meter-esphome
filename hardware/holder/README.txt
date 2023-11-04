@@ -1,0 +1,1 @@
+ PL-05N inductive proximity sensor holder for gas-meter Pipersberg (G4 RF1 c) by mspaehn on Thingiverse: https://www.thingiverse.com/thing:5856718

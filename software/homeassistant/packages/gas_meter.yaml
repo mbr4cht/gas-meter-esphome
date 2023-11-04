@@ -1,0 +1,25 @@
+input_number:
+  gas_price_eur_per_kwh:
+    name: "Gas Price in €/kWh"
+    mode: box
+    min: 0
+    max: 9999999999
+    step: 0.001
+    unit_of_measurement: "€/kWh"
+    icon: mdi:cash
+
+template:
+  - sensor:
+    - name: "Gas Meter Reading kWh"
+      unique_id: gas_meter_reading_kWh_template
+      unit_of_measurement: "kWh"
+      state: "{{ '%0.2f' | format(states('sensor.gas_meter_reading_m3') | float * 0.9159 * 11.258)}}"
+      icon: mdi:meter-gas
+      state_class: total_increasing
+    - name: "Gas Cost Reading"
+      unique_id: gas_cost_reading_eur_template
+      unit_of_measurement: "€"
+      state: "{{ '%0.2f' | format( (states('sensor.gas_meter_reading_kwh') | float) *
+                                   ((states('input_number.gas_price_eur_per_kwh') | float)))}}"
+      icon: mdi:cash-multiple
+      state_class: total_increasing

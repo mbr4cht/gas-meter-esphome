@@ -1,0 +1,82 @@
+esphome:
+  name: sensor-gas-meter
+
+esp8266:
+  board: nodemcuv2
+  # Enable this if you want to store the total number of pulses in case of a power outage
+  restore_from_flash: true 
+
+# Enable logging
+#logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+  services:
+    - service: set_pulses_total # Service to set current number of pulses
+      variables:
+        pulses_total_ha: int
+      then:
+        - globals.set:
+            id: pulses_total
+            value: !lambda 'return pulses_total_ha;'
+
+ota:
+  password: "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+
+wifi:
+  ssid: "Wifi SSID"
+  password: "Wifi Password"
+  domain: .fritz.box
+
+  # Enable fallback hotspot (captive portal) in case Wifi connection fails
+  ap:
+    ssid: "Gas-Meter Fallback Hotspot"
+    password: "XXXXXXXXXXXX"
+
+captive_portal:
+
+# Global variable to store the total number of pulses as unsigned long
+globals:
+  - id: pulses_total
+    type: unsigned long
+    restore_value: true
+
+sensor:
+  # Sensor internally to measure raw voltage on pin 
+  - platform: adc
+    internal: true
+    pin: A0
+    name: "Internal pulse sensor voltage"
+    update_interval: 0.1s
+    id: pulse_sensor_raw_voltage
+    
+  # Sensor exposed externally to Homeassistant 
+  - platform: template
+    name: "Gas Meter Reading m³"
+    unit_of_measurement: "m³"
+    accuracy_decimals: 2
+    device_class: gas
+    state_class: total_increasing
+    icon: mdi:meter-gas-outline
+    id: gas_meter_reading_m3
+    # Conversion from pulses to m³ (read from gas meter, here 0.01m³/pulse)
+    lambda: |-
+      return id(pulses_total) * 0.01;
+    update_interval: 15s
+
+# Binary sensor to count pulses when raw voltage drops below 0.3V
+binary_sensor:
+  - platform: analog_threshold
+    internal: true
+    name: "Gas pulse"
+    id: internal_pulse_counter
+    sensor_id: pulse_sensor_raw_voltage  # Use raw voltage as input
+    threshold: 0.3                       # Set threshold to 0.3V
+    filters:
+      - invert:                          # Invert due to sensor design
+      - delayed_on: 300ms                # Wait 300ms until trigger to 
+    on_press:
+      then:
+        - lambda: id(pulses_total) += 1; # Increase number of total pulses
