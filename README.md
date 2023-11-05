@@ -30,13 +30,13 @@ NOTE: The design is a remix of [a sensor holder for LJ12A3-4-Z/AY](https://www.t
 #### Photos of real setup
 
 <p float="left">
-  <img src="hardware/holder/images/sensor_holder_1.jpg" width="49%"   alt="PL-05N Sensor holder for Pipersberg G4 RF1 c"/>
-  <img src="hardware/holder/images/sensor_holder_3.jpg" width="50.5%" alt="PL-05N Sensor holder for Pipersberg G4 RF1 c"/> 
+  <img src="hardware/holder/images/sensor_holder_1.jpg" width="48%"   alt="PL-05N Sensor holder for Pipersberg G4 RF1 c"/>
+  <img src="hardware/holder/images/sensor_holder_3.jpg" width="49.5%" alt="PL-05N Sensor holder for Pipersberg G4 RF1 c"/> 
 </p>
 
 <p float="left">
-  <img src="hardware/holder/images/sensor_holder_2.jpg" width="49%"   alt="PL-05N Sensor holder for Pipersberg G4 RF1 c"/> 
-  <img src="hardware/holder/images/sensor_holder_4.jpg" width="50.5%" alt="PL-05N Sensor holder for Pipersberg G4 RF1 c"/>
+  <img src="hardware/holder/images/sensor_holder_2.jpg" width="48%"   alt="PL-05N Sensor holder for Pipersberg G4 RF1 c"/> 
+  <img src="hardware/holder/images/sensor_holder_4.jpg" width="49.5%" alt="PL-05N Sensor holder for Pipersberg G4 RF1 c"/>
 </p>
 
 ### Wiring
