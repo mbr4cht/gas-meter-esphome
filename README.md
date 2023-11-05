@@ -23,15 +23,21 @@ The 3D printing files for the sensor holder can be found in the [holder](holder)
 NOTE: The design is a remix of [a sensor holder for LJ12A3-4-Z/AY](https://www.thingiverse.com/thing:5160100).
 
 #### Render of the holder
-
-![PL-05N Sensor holder for Pipersberg G4 RF1 c](hardware/holder/images/sensor_holder_render.png)
+<p align="center">
+  <img src="hardware/holder/images/sensor_holder_render.png" width="60%" alt="PL-05N Sensor holder for Pipersberg G4 RF1 c"/>
+</p>
 
 #### Photos of real setup
 
-![PL-05N Sensor holder for Pipersberg G4 RF1 c](hardware/holder/images/sensor_holder_1.jpg)
-![PL-05N Sensor holder for Pipersberg G4 RF1 c](hardware/holder/images/sensor_holder_2.jpg)
-![PL-05N Sensor holder for Pipersberg G4 RF1 c](hardware/holder/images/sensor_holder_3.jpg)
-![PL-05N Sensor holder for Pipersberg G4 RF1 c](hardware/holder/images/sensor_holder_4.jpg)
+<p float="left">
+  <img src="hardware/holder/images/sensor_holder_1.jpg" width="49%"   alt="PL-05N Sensor holder for Pipersberg G4 RF1 c"/>
+  <img src="hardware/holder/images/sensor_holder_3.jpg" width="50.5%" alt="PL-05N Sensor holder for Pipersberg G4 RF1 c"/> 
+</p>
+
+<p float="left">
+  <img src="hardware/holder/images/sensor_holder_2.jpg" width="49%"   alt="PL-05N Sensor holder for Pipersberg G4 RF1 c"/> 
+  <img src="hardware/holder/images/sensor_holder_4.jpg" width="50.5%" alt="PL-05N Sensor holder for Pipersberg G4 RF1 c"/>
+</p>
 
 ### Wiring
 
@@ -43,7 +49,8 @@ The cable colors of (inductive) sensors, seem to deviate from the standard color
 | GND                | blue   |
 | A0 (Analog)        | black  | 
 
-![Schematic](hardware/wiring/ESP8266_LJ12A3-4-ZBY_wiring.png)
+<p float="left">
+  <img src="hardware/wiring/ESP8266_LJ12A3-4-ZBY_wiring.png" width="100%" alt="Wiring diagram"/> 
 
 NOTE: The PL-05N is rated for input voltages from 10V to 30V. However, I found that it is working perfectly fine with the 5V voltage supply sketched above. If in doubt, please add a buck-boost converter to the brown cable to reach 10V.
 
