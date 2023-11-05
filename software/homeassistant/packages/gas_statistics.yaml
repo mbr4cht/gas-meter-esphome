@@ -1,4 +1,5 @@
 input_number:
+  # Gas consumption statistic entities
   gas_consumption_yesterday:
     name: "Gas Consumption Yesterday"
     mode: box
@@ -6,14 +7,6 @@ input_number:
     max: 9999999999
     step: 0.01
     unit_of_measurement: "kWh"
-    icon: mdi:meter-gas
-  gas_cost_yesterday:
-    name: "Gas Cost Yesterday"
-    mode: box
-    min: 0
-    max: 9999999999
-    step: 0.01
-    unit_of_measurement: "€"
     icon: mdi:meter-gas
   gas_consumption_last_week:
     name: "Gas Consumption Last Week"
@@ -23,14 +16,6 @@ input_number:
     step: 0.01
     unit_of_measurement: "kWh"
     icon: mdi:meter-gas
-  gas_cost_last_week:
-    name: "Gas Cost Last Week"
-    mode: box
-    min: 0
-    max: 9999999999
-    step: 0.01
-    unit_of_measurement: "€"
-    icon: mdi:meter-gas
   gas_consumption_last_month:
     name: "Gas Consumption Last Month"
     mode: box
@@ -38,6 +23,23 @@ input_number:
     max: 9999999999
     step: 0.01
     unit_of_measurement: "kWh"
+    icon: mdi:meter-gas
+  # Gas cost statistic entities
+  gas_cost_yesterday:
+    name: "Gas Cost Yesterday"
+    mode: box
+    min: 0
+    max: 9999999999
+    step: 0.01
+    unit_of_measurement: "€"
+    icon: mdi:meter-gas
+  gas_cost_last_week:
+    name: "Gas Cost Last Week"
+    mode: box
+    min: 0
+    max: 9999999999
+    step: 0.01
+    unit_of_measurement: "€"
     icon: mdi:meter-gas
   gas_cost_last_month:
     name: "Gas Cost Last Month"
@@ -48,40 +50,9 @@ input_number:
     unit_of_measurement: "€"
     icon: mdi:meter-gas
 
-template:
-  - sensor:
-    - name: 'Gas Consumption Yesterday'
-      unit_of_measurement: 'kWh'
-      unique_id: gas_consumption_kwh_yesterday_template
-      icon: mdi:meter-gas
-      state: "{{ '%0.2f' | format(states('input_number.gas_consumption_yesterday') | float) }}"
-    - name: "Gas Cost Yesterday"
-      unit_of_measurement: "€"
-      unique_id: gas_consumption_eur_yesterday_template
-      icon: mdi:cash-multiple
-      state: "{{ '%0.2f' | format(states('input_number.gas_cost_yesterday') | float) }}"
-    - name: 'Gas Consumption Last Week'
-      unit_of_measurement: 'kWh'
-      unique_id: gas_consumption_kwh_last_week_template
-      icon: mdi:meter-gas
-      state: "{{ '%0.2f' | format(states('input_number.gas_consumption_last_week') | float) }}"
-    - name: 'Gas Cost Last Week'
-      unit_of_measurement: '€'
-      unique_id: gas_cost_eur_last_week_template
-      icon: mdi:cash-multiple
-      state: "{{ '%0.2f' | format(states('input_number.gas_cost_last_week') | float) }}"
-    - name: 'Gas Consumption Last Month'
-      unit_of_measurement: 'kWh'
-      unique_id: gas_consumption_kwh_last_month_template
-      icon: mdi:meter-gas
-      state: "{{ '%0.2f' | format(states('input_number.gas_consumption_last_month') | float) }}"
-    - name: 'Gas Cost Last Month'
-      unit_of_measurement: '€'
-      unique_id: gas_cost_eur_last_month_template
-      icon: mdi:cash-multiple
-      state: "{{ '%0.2f' | format(states('input_number.gas_cost_last_month') | float) }}"
-
+# Gas statistics for today, this week, this month and this year
 utility_meter:
+  # Gas consumption statistic entities
   gas_consumption_kwh_daily:
     name: "Gas Consumption Today"
     unique_id: gas_consumption_kwh_daily
@@ -102,6 +73,7 @@ utility_meter:
     unique_id: gas_consumption_kwh_yearly
     source: sensor.gas_meter_reading_kwh
     cycle: yearly
+  # Gas cost statistic entities
   gas_cost_euro_daily:
     name: "Gas Cost Today"
     unique_id: gas_cost_euro_daily
@@ -122,6 +94,43 @@ utility_meter:
     unique_id: gas_cost_euro_yearly
     source: sensor.gas_cost_reading
     cycle: yearly
+
+# Gas statistics for yesterday, last week and last month
+template:
+  - sensor:
+      # Gas consumption statistic entities
+    - name: 'Gas Consumption Yesterday'
+      unit_of_measurement: 'kWh'
+      unique_id: gas_consumption_kwh_yesterday_template
+      icon: mdi:meter-gas
+      state: "{{ states('input_number.gas_consumption_yesterday') | float }}"
+    - name: 'Gas Consumption Last Week'
+      unit_of_measurement: 'kWh'
+      unique_id: gas_consumption_kwh_last_week_template
+      icon: mdi:meter-gas
+      state: "{{ states('input_number.gas_consumption_last_week') | float }}"
+    - name: 'Gas Consumption Last Month'
+      unit_of_measurement: 'kWh'
+      unique_id: gas_consumption_kwh_last_month_template
+      icon: mdi:meter-gas
+      state: "{{ states('input_number.gas_consumption_last_month') | float }}"
+      # Gas cost statistic entities
+    - name: "Gas Cost Yesterday"
+      unit_of_measurement: "€"
+      unique_id: gas_consumption_eur_yesterday_template
+      icon: mdi:cash-multiple
+      state: "{{ '%0.2f' | format(states('input_number.gas_cost_yesterday') | float) }}"
+    - name: 'Gas Cost Last Week'
+      unit_of_measurement: '€'
+      unique_id: gas_cost_eur_last_week_template
+      icon: mdi:cash-multiple
+      state: "{{ '%0.2f' | format(states('input_number.gas_cost_last_week') | float) }}"
+    - name: 'Gas Cost Last Month'
+      unit_of_measurement: '€'
+      unique_id: gas_cost_eur_last_month_template
+      icon: mdi:cash-multiple
+      state: "{{ '%0.2f' | format(states('input_number.gas_cost_last_month') | float) }}"
+
 
 automation:
   - alias: "Gas Yesterday"

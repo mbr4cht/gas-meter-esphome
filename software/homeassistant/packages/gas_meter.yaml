@@ -1,4 +1,5 @@
 input_number:
+  # Gas price in €/kWh
   gas_price_eur_per_kwh:
     name: "Gas Price in €/kWh"
     mode: box
@@ -7,6 +8,7 @@ input_number:
     step: 0.001
     unit_of_measurement: "€/kWh"
     icon: mdi:cash
+  # Conversion factor for calcluation of kWh from m³ (ask your gas supplier)
   gas_conversion_factor:
     name: "Gas Conversion Factor"
     mode: box
@@ -14,7 +16,8 @@ input_number:
     max: 10
     step: 0.000001
     unit_of_measurement: ""
-    icon: mdi:cash
+    icon: mdi:calculator
+  # Calorific value for calcluation of kWh from m³ (ask your gas supplier)
   gas_calorific_value:
     name: "Gas Calorific Value"
     mode: box
@@ -22,7 +25,7 @@ input_number:
     max: 20
     step: 0.000001
     unit_of_measurement: "kWh/m³"
-    icon: mdi:cash
+    icon: mdi:fire
 
 template:
   - sensor:
