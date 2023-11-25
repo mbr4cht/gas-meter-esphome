@@ -76,7 +76,8 @@ binary_sensor:
     threshold: 0.01                       # Set threshold to 0.01V
     filters:
       - invert:                          # Invert due to sensor design
-      - delayed_on: 300ms                # Wait 300ms until trigger to 
+      - delayed_on: 300ms                # Wait 300ms until trigger
+      - delayed_off: 5s                  # Wait 5s until trigger reset
     on_press:
       then:
         - lambda: id(pulses_total) += 1; # Increase number of total pulses
