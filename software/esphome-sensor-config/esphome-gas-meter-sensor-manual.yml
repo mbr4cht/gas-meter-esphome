@@ -66,14 +66,14 @@ sensor:
       return id(pulses_total) * 0.01;
     update_interval: 15s
 
-# Binary sensor to count pulses when raw voltage drops below 0.3V
+# Binary sensor to count pulses when raw voltage drops below 0.01V
 binary_sensor:
   - platform: analog_threshold
     internal: true
     name: "Gas pulse"
     id: internal_pulse_counter
     sensor_id: pulse_sensor_raw_voltage  # Use raw voltage as input
-    threshold: 0.3                       # Set threshold to 0.3V
+    threshold: 0.01                       # Set threshold to 0.01V
     filters:
       - invert:                          # Invert due to sensor design
       - delayed_on: 300ms                # Wait 300ms until trigger to 

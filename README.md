@@ -64,12 +64,32 @@ One of the easiest ways to connect an ESP8266 to Home Assistant is using ESPHome
 
 I am using 
 * an [analog to digital sensor](https://esphome.io/components/sensor/adc.html) to measure the raw voltage on pin A0
-* an [analog threshold binary sensor](https://esphome.io/components/binary_sensor/analog_threshold.html) with the threshold set to 0.3V to trigger a pulse
+* an [analog threshold binary sensor](https://esphome.io/components/binary_sensor/analog_threshold.html) with the threshold set to 0.01V to trigger a pulse
 * a [template sensor](https://esphome.io/components/sensor/template.html) to convert the pulses to the m³ consumer locally and to expose this value to Home Assistant
 
 Please see the [ESPHome configuration for PL-05N](software/esphome-sensor-config/esphome-gas-meter-sensor-manual.yml) for all details.
 
-NOTE: I tried using the [GPIO binary sensor](https://esphome.io/components/binary_sensor/gpio.html) on a digital GPIO pin before but encountered a lot of misreadings. Even with different `pullup` and `filters` using `delayed_on` I was not able to fix them.
+NOTE: I tried using the [GPIO binary sensor](https://esphome.io/components/binary_sensor/gpio.html) on a digital GPIO pin before but encountered a lot of misreadings. Even with different `pullup` and `filters` using `delayed_on` I was not able to fix them. Please check the esphome logs, in case of misredings.
+
+#### Example esphome log file
+
+    ...
+    [09:26:48][D][sensor:093]: 'Internal pulse sensor voltage': Sending state 0.29883 V with 2 decimals of accuracy
+    [09:26:48][D][sensor:093]: 'Internal pulse sensor voltage': Sending state 0.29883 V with 2 decimals of accuracy
+    [09:26:48][D][sensor:093]: 'Internal pulse sensor voltage': Sending state 0.29883 V with 2 decimals of accuracy
+    [09:26:48][D][sensor:093]: 'Internal pulse sensor voltage': Sending state 0.00098 V with 2 decimals of accuracy
+    [09:26:48][D][sensor:093]: 'Internal pulse sensor voltage': Sending state 0.00098 V with 2 decimals of accuracy
+    [09:26:48][D][sensor:093]: 'Internal pulse sensor voltage': Sending state 0.00098 V with 2 decimals of accuracy
+    [09:26:49][D][sensor:093]: 'Internal pulse sensor voltage': Sending state 0.00098 V with 2 decimals of accuracy
+    ...
+    [09:26:51][D][sensor:093]: 'Internal pulse sensor voltage': Sending state 0.00098 V with 2 decimals of accuracy
+    [09:26:51][D][sensor:093]: 'Internal pulse sensor voltage': Sending state 0.00098 V with 2 decimals of accuracy
+    [09:26:51][D][sensor:093]: 'Internal pulse sensor voltage': Sending state 0.00098 V with 2 decimals of accuracy
+    [09:26:51][D][sensor:093]: 'Internal pulse sensor voltage': Sending state 0.00195 V with 2 decimals of accuracy
+    [09:26:51][D][sensor:093]: 'Internal pulse sensor voltage': Sending state 0.29590 V with 2 decimals of accuracy
+    [09:26:51][D][sensor:093]: 'Internal pulse sensor voltage': Sending state 0.29590 V with 2 decimals of accuracy
+    [09:26:51][D][sensor:093]: 'Internal pulse sensor voltage': Sending state 0.29590 V with 2 decimals of accuracy
+    ...
 
 ### Home Assistant
 
